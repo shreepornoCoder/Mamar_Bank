@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+<title>Transfer Money</title>
+{% endblock  %}
+
+{% block body %}
+<style>
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-error {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert-info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
+}
+
+.alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+</style>
+
+  {% for m in messages %}
+    <h1 class = "alert alert-{{ m.tags }} text-center">{{m}}</h1>
+  {% endfor %}
+
+  <h2 style="text-align: center; padding: 20px; font-weight: bold; font-size: 30px;">Transfer Money</h2>
+  <form method="post" class="space-y-4 p-4 max-w-lg mx-auto bg-white shadow-md rounded-lg">
+    {% csrf_token %}
+    
+    <!-- Input Field for Amount -->
+    <div>
+        <label for="id_amount_for_transfer" class="block text-sm font-medium text-gray-700">Amount to Transfer</label>
+        <input 
+            type="number" 
+            name="amount_for_transfer" 
+            id="id_amount_for_transfer" 
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+        >
+    </div>
+    
+    <!-- Input Field for Sender ID -->
+    <div>
+        <label for="id_sender_id" class="block text-sm font-medium text-gray-700">Sender Account ID</label>
+        <input 
+            type="text" 
+            name="sender_id" 
+            id="id_sender_id" 
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+        >
+    </div>
+    
+    <!-- Submit Button -->
+    <div>
+        <button 
+            type="submit" 
+            class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+            Transfer
+        </button>
+    </div>
+</form>
+{% endblock %}
