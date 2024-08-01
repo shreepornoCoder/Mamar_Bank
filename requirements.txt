@@ -54,7 +54,6 @@ PyRect
 PyScreeze
 python-dateutil
 pytweening
-pywin32
 pyzmq
 requests
 six
