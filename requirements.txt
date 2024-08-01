@@ -28,7 +28,6 @@ jupyter_core
 lxml
 matplotlib-inline
 MouseInfo
-msvc-runtime
 mysql-connector-python
 nest-asyncio
 numpy
