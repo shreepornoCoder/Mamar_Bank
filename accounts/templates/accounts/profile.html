@@ -1,4 +1,10 @@
-{% extends 'base.html' %} {% load static %} {% block title %}<title>Banking System</title>{% endblock %} {% block body %} {% if form.non_field_errors %} {% for error in form.non_field_errors %}
+{% extends 'base.html' %} {% load static %} {% block title %}<title>Banking System</title>{% endblock %} 
+
+{% block body %} 
+
+<button style="background-color: plum; padding: 15px; border-radius: 15px; margin-top: 20px; "><a class="text-white" href="{% url 'pass_change' %}">Change Password</a></button>
+
+{% if form.non_field_errors %} {% for error in form.non_field_errors %}
 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
     <p class="font-bold">Error!</p>
     <p class="block sm:inline">{{ error }}</p>

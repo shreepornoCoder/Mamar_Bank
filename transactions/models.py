@@ -17,7 +17,5 @@ class Transaction(models.Model):
     #sender_id = models.ForeignKey(to=UserBankAccount, related_name="sender_details", on_delete=models.CASCADE, blank=True, null=True)
     sender_id = models.IntegerField(blank=True, null=True)
 
-    is_bankrupt = models.BooleanField(default=False)
-
     class Meta:
         ordering = ['timestamp'] # for order the transactions depending on time

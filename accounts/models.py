@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from accounts.constants import ACCOUNT_TYPE, GENDER
 
 # Create your models here.
@@ -24,3 +25,6 @@ class UserAddress(models.Model):
 
     def __str__(self):
         return str(self.user.email)
+    
+class Bank(models.Model):
+    is_bankrupt = models.BooleanField(default=False)

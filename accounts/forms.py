@@ -1,9 +1,9 @@
 from typing import Any
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django import forms
 from .constants import ACCOUNT_TYPE, GENDER
 from django.contrib.auth.models import User
-from . models import UserBankAccount, UserAddress
+from . models import UserBankAccount, UserAddress, Bank
 
 class UserRegistrationForm(UserCreationForm):
     street_address = forms.CharField(max_length=100)
@@ -127,3 +127,14 @@ class UserUpdateForm(forms.ModelForm):
             user_address.save()
 
         return user
+
+class BankForm(forms.ModelForm):
+    class Meta:
+        model = Bank
+        fields = "__all__"
+
+class ChangePasswordFormUser(PasswordChangeForm):
+    class Meta:
+        old_password = forms.CharField(widget=forms.PasswordInput())
+        new_password = forms.CharField(widget=forms.PasswordInput())
+        confirm_password = forms.CharField(widget=forms.PasswordInput()) 

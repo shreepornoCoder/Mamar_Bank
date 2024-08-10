@@ -2,6 +2,44 @@
 
 {% block body %}
 
+<style>
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+    }
+    
+    .alert-success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+    
+    .alert-error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    
+    .alert-info {
+      color: #0c5460;
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+    }
+    
+    .alert-warning {
+      color: #856404;
+      background-color: #fff3cd;
+      border-color: #ffeeba;
+    }
+</style>
+
+
+{% for m in messages %}
+<h1 class = "alert alert-{{ m.tags }} text-center">{{m}}</h1>
+{% endfor %}
+
 <div class="w-full flex mt-5 justify-center ">
     <div class="bg-white w-5/12 rounded-lg">
         {% if title == 'Request For Loan' %}

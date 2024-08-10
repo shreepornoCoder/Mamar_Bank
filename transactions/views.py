@@ -13,6 +13,7 @@ from django.views import View
 from django.urls import reverse_lazy
 from django.views.generic import FormView
 from accounts.models import UserBankAccount
+from accounts.models import Bank
 
 #for sending emails
 from django.core.mail import EmailMessage, EmailMultiAlternatives
@@ -47,7 +48,6 @@ class TransectionCreateMixin(LoginRequiredMixin, CreateView):
         context.update({
             'title':self.title
         })
-        context["status"] = Transaction.is_bankrupt
         return context
     
 class DepositView(TransectionCreateMixin):
@@ -85,12 +85,22 @@ class WithDrawView(TransectionCreateMixin):
         initial = {"transaction_type":WITHDRAWAL}
         return initial
     
-    def form_valid(self, form):
+    def form_valid(self, form): 
+        try:
+            bank = Bank.objects.get(is_bankrupt=True)
+        except Bank.DoesNotExist:
+            bank = None
+
+        if bank and bank.is_bankrupt:
+            messages.error(self.request, f"You can't Transfer Money! Bank is Bankcrupt now!")
+            return redirect("withdraw_money")
+            
+            
         amount = form.cleaned_data.get("amount")
         self.request.user.account.balance -= form.cleaned_data.get('amount')
         self.request.user.account.save(update_fields=['balance'])
         messages.success(self.request, f"Money Withdraw Successfully!")
-        
+
         send_transaction_email(self.request.user, amount, "Deposit Email", "transactions/withdraw_money.html")
 
         return super().form_valid(form)
@@ -188,6 +198,16 @@ class MoneyTransferView(FormView, LoginRequiredMixin):
     success_url = reverse_lazy("transfer_money")
 
     def form_valid(self, form):
+        try:
+            bank = Bank.objects.get(is_bankrupt=True)
+        except Bank.DoesNotExist:
+            bank = None
+
+        if bank and bank.is_bankrupt:
+            messages.error(self.request, f"You can't Transfer Money! Bank is Bankcrupt now!")
+            return redirect("transfer_money")
+            
+
         user_account = self.request.user.account
         sender_id = form.cleaned_data.get('sender_id')
         amount = form.cleaned_data.get('amount_for_transfer')
@@ -211,6 +231,8 @@ class MoneyTransferView(FormView, LoginRequiredMixin):
                     'balance'
                 ]
             )
+            send_transaction_email(self.request.user, amount, "Money Transfer", "transactions/money_tran.html")
+            send_transaction_email(sender_acc.user, amount, "Money Recieved", "transactions/money_recieved.html")
             messages.success(self.request, "Money transferred Successfully!")
 
         else:
